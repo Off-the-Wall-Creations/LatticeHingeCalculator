@@ -1,0 +1,120 @@
+﻿@page "/"
+@using System.Xml;
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Lattice Hinge Calculator</PageTitle>
+<h1>Lattice Hinge Calculator</h1>
+<p class="alert alert-info">
+    This tool can be used to generate a single compliant hinge for laser cutting. The rendering can be saved as a SVG file and imported into your SVG project to be joined.
+</p>
+
+<div class="container mb-3">
+    <div class="btn-toolbar mb-2" role="toolbar" aria-label="Workspace Toolbar">
+        @if (rendering != null)
+        {
+            <div class="btn-group me-2" role="group" aria-label="Rendering">
+                <button type="button" class="btn btn-primary" aria-label="Save" @onclick="SaveBatch">
+                    <i class="iconoir-save-floppy-disk"></i>
+                </button>
+            </div>
+        }
+    </div>
+    <hr/>
+    <fieldset>
+        <legend>Inputs</legend>
+        <div class="row">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="h" class="form-label">Overall height (mm, <code>h</code>)</label>
+                    <input type="number" min="0" step="0.1" name="h" id="h" @bind="@h" class="form-control" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="w" class="form-label">Overall width (mm, <code>w</code>)</label>
+                    <input type="number" min="0" step="0.1" name="w" id="w" @bind="@w" class="form-control" />
+                    <!-- TODO: Add modal to calculate n -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="t" class="form-label">Material thickness (mm, <code>t</code>)</label>
+                    <input type="number" min="0.01" step="0.01" name="t" id="t" @bind="@t" class="form-control" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="oa" class="form-label">Total bend angle of the piece Angle (degrees, <code>oa</code>)</label>
+                    <input type="number" min="0" step="1" name="oa" id="oa" @bind="@oa" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Outputs</legend>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="cc" class="form-label">Number of torsional links (<code>cc</code>)</label>
+                    <input type="number" name="cc" id="cc" @bind="@cc" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="ir" class="form-label">Inner radius (mm, <code>ir</code>)</label>
+                    <input type="number" name="ir" id="ir" @bind="@ir" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="or" class="form-label">Outer radius (mm, <code>or</code>)</label>
+                    <input type="number" name="or" id="or" @bind="@or" readonly class="form-control" />
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <button type="button" class="btn btn-primary" @onclick="Render">Render</button>
+    <hr />
+</div>
+<div class="container">
+    @if (rendering != null)
+    {
+        @((MarkupString)rendering.OuterXml)
+    }
+</div>
+
+@code {
+    private double h = 100;
+    private double w = 100;
+    private double t = 3;
+    private double oa = 90;
+    private double ir = 0;
+    private double or = 0;
+    private int cc = 0;
+
+    private XmlDocument rendering;
+
+    private void Render()
+    {
+        rendering = SvgFactory.Generate(h, w, t, oa);
+        cc = Calculator.GetTorsionalLinks(t, oa);
+
+        ir = Calculator.GetInnerRadius(t, oa, cc);
+        or = Calculator.GetOuterRadius(t, oa, cc);
+    }
+
+    private async Task SaveBatch()
+    {
+        // Generate SVG content
+        string svgContent = rendering.OuterXml;
+
+        // Convert SVG content to byte array
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(svgContent);
+
+        string filename = $"compliant hinge_{t}mm x {oa}deg.svg";
+        // Initiate file download
+        await JSRuntime.InvokeVoidAsync("window.saveAsFile", filename, Convert.ToBase64String(bytes));
+    }
+}

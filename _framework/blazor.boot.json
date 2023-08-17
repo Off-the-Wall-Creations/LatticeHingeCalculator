@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "LatticeHingeCalculator.dll": "sha256-LVY7giKtRQYpg2Su8OMKD7Kmoe1rfuILLaSbBPlT0zU=",
+      "LatticeHingeCalculator.dll": "sha256-Rnk28QnMigIOBBWu4se+fWdIxttittgx1FlFRJ3F1C0=",
       "LatticeHingeCalculator.WebApp.dll": "sha256-CBC4x9gNc5HhRpB2fU3rBXlnSYVMvfRFm5gZQsjE1+4=",
       "Microsoft.AspNetCore.Components.dll": "sha256-1mGZVWNb+VfWAVVL3oY\/oRvF86ju+OP1ivyyP8Mhix0=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-r0YBuWGUlaHUh2Z23twt81FC7qrTbOMZKoaD\/dgspW4=",

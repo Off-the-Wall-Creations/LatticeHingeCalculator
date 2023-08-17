@@ -33,11 +33,11 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-TLUGobdm921Lef4TgN518R2OC4LuVPO1vkVtOKGw7HM=",
+      "hash": "sha256-Noe3PyljWESNBotLzMrdd4dhz7y49zDqpO9kTIoTfco=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-LVY7giKtRQYpg2Su8OMKD7Kmoe1rfuILLaSbBPlT0zU=",
+      "hash": "sha256-Rnk28QnMigIOBBWu4se+fWdIxttittgx1FlFRJ3F1C0=",
       "url": "_framework\/LatticeHingeCalculator.dll"
     },
     {
@@ -5737,5 +5737,5 @@
       "url": "saveAs.js"
     }
   ],
-  "version": "3Qf5Dunz"
+  "version": "UG5SrFNJ"
 };

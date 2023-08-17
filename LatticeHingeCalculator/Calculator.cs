@@ -69,6 +69,7 @@
         /// <returns>Inner radius</returns>
         public static double GetInnerRadius(double t, double oa, int n)
         {
+            return GetTotalHingeWidth(t, n) / (oa * (Math.PI / 180));
             return GetOuterRadius(t, oa, n) - t;
             return ((2 * GetTotalHingeWidth(t, n)) / oa) - (t / 2);
         }
@@ -82,6 +83,7 @@
         /// <returns>Outer radius</returns>
         public static double GetOuterRadius(double t, double oa, int n)
         {
+            return GetInnerRadius(t, oa, n) + t;
             return (GetTotalHingeWidth(t, n) / 2) / Math.Sin(oa / 2);
             return ((2 * GetTotalHingeWidth(t, n)) / oa) + (t / 2);
         }
